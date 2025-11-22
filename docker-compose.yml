@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  juice-shop:
+    image: docker.io/bkimminich/juice-shop:latest
+    container_name: juice-shop-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - juice-shop-network
+
+networks:
+  juice-shop-network:
+    driver: bridge
+
+volumes:
+  juice-shop-data:
+    driver: local
